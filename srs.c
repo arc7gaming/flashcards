@@ -86,6 +86,8 @@ int main(int argc, char **argv) {
 
     while (!isEmpty(deck)) {
         card *current_card = deq(deck);
+        printf("%s\n", current_card->text[0]);
+        printf("%s\n", current_card->text[1]);
         fputs(current_card->text[0], fp);
         fputs(current_card->text[1], fp);
 
