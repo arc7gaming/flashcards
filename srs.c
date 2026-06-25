@@ -50,38 +50,51 @@ int main(int argc, char **argv) {
 
         char ch;
         if (scanf("%c", &ch) == 1) {
-            if (ch == 'q')
+            if (ch == 'q') {
+              enq(deck, current_card->text[0], current_card->text[1], current_card->val);
+
               break;
+            }
             printf("\n%s\n", current_card->text[1]);
         }
         
         printf("Enter fail/pass(1/2): ");  
 
-        if (scanf("%c", &ch) == 1) {
-            if (ch == 'q')
-              break;
-        }
-        
         int x;
+        
         if (scanf("%d", &x) == 1) {
             if (x >= 2) {  // pass 
-                x = 2;
+              x = 2;
             }
             else {  // fail 
               x = 1;
             }
         }
         else {  // fail 
-            x = 1;
+            enq(deck, current_card->text[0], current_card->text[1], current_card->val);
+
+            break;
         }
+        
+        while ((getchar()) != '\n');
+
         enq(deck, current_card->text[0], current_card->text[1], current_card->val + x);
+
     }
+    
+    fp = fopen(argv[1], "w");
 
     while (!isEmpty(deck)) {
         card *current_card = deq(deck);
+        printf("%s\n", current_card->text[0]);
+        printf("%s\n", current_card->text[1]);
+        fputs(current_card->text[0], fp);
+        fputs(current_card->text[1], fp);
 
         free(current_card);
     }
+
+    fclose(fp);
 
     return 0;
 
