@@ -1,4 +1,0 @@
-card front1
-card back1
-card front2
-card back2
