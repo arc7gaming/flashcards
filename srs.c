@@ -8,8 +8,7 @@
 void readFile(Deck deck) {
   FILE *fp = fopen("cards.txt", "r");
   if (fp == NULL) {
-    perror("File not opened");
-    exit(EXIT_FAILURE);
+    return;
   }
   char line[256];
 
@@ -31,46 +30,50 @@ void readFile(Deck deck) {
   fclose(fp);
 }
 
-void runCard(Deck deck) {
+void runCards(Deck deck) {
+  if (isEmpty(deck)) {
+    printf("No cards found\n");
+    return;
+  }
+  for (;;) {
+    card *current_card = deq(deck);
 
-  card *current_card = deq(deck);
+    printf("\n%s\n", current_card->text[0]);
 
-  printf("\n%s\n", current_card->text[0]);
+    printf("Enter to see back: ");
 
-  printf("Enter to see back: ");
+    char ch;
+    if (scanf("%c", &ch) == 1) {
+      if (ch == 'q') {
+        enq(deck, current_card->text[0], current_card->text[1], current_card->val);
 
-  char ch;
-  if (scanf("%c", &ch) == 1) {
-    if (ch == 'q') {
+        return;
+      }
+      printf("\n%s\n", current_card->text[1]);
+    }
+        
+    printf("Enter fail/pass(1/2): ");  
+
+    int x;
+        
+    if (scanf("%d", &x) == 1) {
+      if (x >= 2) {  // pass 
+        x = 2;
+      }
+      else {  // fail 
+        x = 1;
+      }
+    }
+    else {  // fail 
       enq(deck, current_card->text[0], current_card->text[1], current_card->val);
 
       return;
     }
-    printf("\n%s\n", current_card->text[1]);
-  }
         
-  printf("Enter fail/pass(1/2): ");  
+    while ((getchar()) != '\n');
 
-  int x;
-        
-  if (scanf("%d", &x) == 1) {
-    if (x >= 2) {  // pass 
-      x = 2;
-    }
-    else {  // fail 
-      x = 1;
-    }
+    enq(deck, current_card->text[0], current_card->text[1], current_card->val + x);
   }
-  else {  // fail 
-    enq(deck, current_card->text[0], current_card->text[1], current_card->val);
-
-    return;
-  }
-        
-  while ((getchar()) != '\n');
-
-  enq(deck, current_card->text[0], current_card->text[1], current_card->val + x);
-
 }
 
 void addCard(Deck deck) {
@@ -90,6 +93,8 @@ void addCard(Deck deck) {
   fprintf(fp, "%s\n", front);
   fprintf(fp, "%s\n", back);
 
+  readFile(deck);
+
   fclose(fp);
 }
 
@@ -108,6 +113,27 @@ void emptyQueue(Deck deck) {
 int main(int argc, char **argv) {
 
   printf("Enter q at any time to quit\n");
+  
+  Deck deck = newDeck();
+  readFile(deck);
+
+  for (;;) {
+    printf("1. Open deck\n2. Add card\n>");
+
+    int choice;
+    scanf("%d", &choice);
+
+    if (choice == 1) {
+      runCards(deck);
+    }
+    else if (choice == 2) {
+      addCard(deck);
+    }
+    else {
+      emptyQueue(deck);
+      return 0;
+    }
+  }
 
   return 0;
 
