@@ -56,4 +56,6 @@ dkms.conf
 
 *.vscode
 
-cards.txt
+*.txt
+
+bin/

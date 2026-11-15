@@ -2,15 +2,14 @@ CC = clang
 
 CFLAGS = -Wall -Werror -std=c23
 
-flashcards: srs.o deck.o
-	$(CC) $(CFLAGS) -o flashcards srs.o deck.o
+bin/flashcards: bin/srs.o bin/deck.o
+	$(CC) $(CFLAGS) -o bin/flashcards bin/srs.o bin/deck.o
 
-srs.o: srs.c deck.h 
-	$(CC) $(CFLAGS) -c srs.c
+bin/srs.o: srs.c deck.h 
+	$(CC) $(CFLAGS) -c srs.c -o bin/srs.o
 
-deck.o: deck.c
-	$(CC) $(CFLAGS) -c deck.c
+bin/deck.o: deck.c
+	$(CC) $(CFLAGS) -c deck.c -o bin/deck.o
 
 clean:
-	rm -f srs.o
-	rm -f deck.o
+	rm -f bin/*
