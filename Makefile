@@ -14,4 +14,5 @@ bin/deck.o: deck.c
 	$(CC) $(CFLAGS) -c deck.c -o bin/deck.o
 
 clean:
-	rm -f bin/*
+	rm -rf bin
+	rm cards.txt
