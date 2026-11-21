@@ -3,8 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-// https://www.geeksforgeeks.org/c/read-a-file-line-by-line-in-c/
-
 void readFile(Deck deck) {
   FILE *fp = fopen("cards.txt", "r");
   if (fp == NULL) {
@@ -31,15 +29,6 @@ void readFile(Deck deck) {
 
 void runCards(Deck deck) {
 
-  int c;
-  while ((c = getchar()) != '\n' && c != EOF)
-    ;
-
-  if (isEmpty(deck)) {
-    printf("No cards found\n");
-    return;
-  }
-
   printf("Enter q to quit");
 
   for (;;) {
@@ -49,58 +38,48 @@ void runCards(Deck deck) {
 
     printf("Enter to see back: ");
 
-    char ch;
-    if (scanf("%c", &ch) == 1) {
-      if (ch == 'q') {
+    getc(stdin);
+
+    printf("\n%s\n", current_card->text[1]);
+
+    printf("Enter fail/pass(1/2): ");
+
+    int x;
+
+    char buffer[1024];
+    while (fgets(buffer, sizeof(buffer), stdin)) {
+      if (sscanf(buffer, "%d", &x) == 1) {
+        if (x >= 2) { // pass
+          x = 2;
+        } else { // fail
+          x = 1;
+        }
+        enq(deck, current_card->text[0], current_card->text[1],
+            current_card->val + x);
+        break;
+      } else {
         enq(deck, current_card->text[0], current_card->text[1],
             current_card->val);
         free(current_card->text[0]);
         free(current_card->text[1]);
         free(current_card->text);
         free(current_card);
-
         return;
       }
-      printf("\n%s\n", current_card->text[1]);
     }
+  }
+}
 
-    printf("Enter fail/pass(1/2): ");
-
-    int x;
-
-    if (scanf("%d", &x) == 1) {
-      if (x >= 2) { // pass
-        x = 2;
-      } else { // fail
-        x = 1;
-      }
-    } else { // fail
-      while (getchar() != '\n')
-        ;
-      enq(deck, current_card->text[0], current_card->text[1],
-          current_card->val);
-      free(current_card->text[0]);
-      free(current_card->text[1]);
-      free(current_card->text);
-      free(current_card);
-
-      return;
-    }
-
-    while ((getchar()) != '\n')
-      ;
-
-    enq(deck, current_card->text[0], current_card->text[1],
-        current_card->val + x);
+void openDeck(Deck deck) {
+  if (!isEmpty(deck))
+    runCards(deck);
+  else {
+    printf("This deck is empty\n");
   }
 }
 
 void addCard(Deck deck) {
   FILE *fp = fopen("cards.txt", "a");
-
-  int c;
-  while ((c = getchar()) != '\n' && c != EOF)
-    ;
 
   printf("Enter front: ");
 
@@ -149,14 +128,17 @@ int main(int argc, char **argv) {
     printf("1. Open deck\n2. Add card\n3. Quit\n> ");
 
     int choice;
-    while (scanf("%d", &choice) != 1) {
-      while (getchar() != '\n')
-        ;
-      printf("Invalid input\n> ");
+    char buffer[1024];
+    while (fgets(buffer, sizeof(buffer), stdin)) {
+      if (sscanf(buffer, "%d", &choice) == 1) {
+        break;
+      } else {
+        printf("Invalid input\n> ");
+      }
     }
 
     if (choice == 1) {
-      runCards(deck);
+      openDeck(deck);
     } else if (choice == 2) {
       addCard(deck);
     } else {

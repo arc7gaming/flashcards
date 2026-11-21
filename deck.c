@@ -58,16 +58,18 @@ card *deq(Deck deck) {
   return top;
 }
 
-/*
-int main() {
-    Deck deck = newDeck();
-    enq(deck, "front2", "back2", 1);
-    enq(deck, "front1", "back1", 2);
-    enq(deck, "front3", "back3", 3);
+#ifdef TEST
 
-    while (!isEmpty(deck)) {
-        card *top = deq(deck);
-    }
-    return 0;
+int main() {
+  Deck deck = newDeck();
+  enq(deck, "front2", "back2", 1);
+  enq(deck, "front1", "back1", 2);
+  enq(deck, "front3", "back3", 3);
+
+  while (!isEmpty(deck)) {
+    card *top = deq(deck);
+  }
+  return 0;
 }
-*/
+
+#endif
