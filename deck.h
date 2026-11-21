@@ -1,13 +1,13 @@
 #ifndef DECK_H
 #define DECK_H
 
-typedef struct card {
+typedef struct Card {
   char **text;
   int val;
-  struct card *next;
-} card;
+  struct Card *next;
+} Card;
 
-typedef struct card *Deck;
+typedef struct Card *Deck;
 
 Deck newDeck();
 
@@ -15,6 +15,6 @@ int isEmpty(Deck deck);
 
 void enq(Deck deck, char *front, char *back, int x);
 
-card *deq(Deck deck);
+Card *deq(Deck deck);
 
 #endif

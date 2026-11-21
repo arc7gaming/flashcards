@@ -7,7 +7,7 @@
 
 Deck newDeck() {
 
-  Deck deck = malloc(sizeof(card));
+  Deck deck = malloc(sizeof(Card));
   deck->next = NULL;
 
   return deck;
@@ -17,9 +17,9 @@ int isEmpty(Deck deck) { return deck->next == NULL; }
 
 void enq(Deck deck, char *front, char *back, int x) {
 
-  card *start = deck->next;
+  Card *start = deck->next;
 
-  card *temp = malloc(sizeof(card));
+  Card *temp = malloc(sizeof(Card));
   temp->text = (char **)malloc(2 * sizeof(char *));
 
   temp->text[0] = strdup(front);
@@ -48,12 +48,12 @@ void enq(Deck deck, char *front, char *back, int x) {
   }
 }
 
-card *deq(Deck deck) {
+Card *deq(Deck deck) {
 
   if (isEmpty(deck))
     return NULL;
 
-  card *top = deck->next;
+  Card *top = deck->next;
   deck->next = top->next;
   return top;
 }
@@ -67,7 +67,7 @@ int main() {
   enq(deck, "front3", "back3", 3);
 
   while (!isEmpty(deck)) {
-    card *top = deq(deck);
+    Card *top = deq(deck);
   }
   return 0;
 }

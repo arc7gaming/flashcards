@@ -32,7 +32,7 @@ void runCards(Deck deck) {
   printf("Enter q to quit");
 
   for (;;) {
-    card *current_card = deq(deck);
+    Card *current_card = deq(deck);
 
     printf("\n%s\n", current_card->text[0]);
 
@@ -106,7 +106,7 @@ void emptyQueue(Deck deck) {
   FILE *fp = fopen("cards_temp.txt", "w");
 
   while (!isEmpty(deck)) {
-    card *current_card = deq(deck);
+    Card *current_card = deq(deck);
     fputs(current_card->text[0], fp);
     fputs(current_card->text[1], fp);
 
